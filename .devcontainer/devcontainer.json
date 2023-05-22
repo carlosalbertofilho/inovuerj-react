@@ -1,0 +1,37 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/alpine
+{
+	"name": "InovUERJ",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {},
+		"ghcr.io/r3dpoint/devcontainer-features/tailwindcss-standalone-cli:1": {}
+	},
+	"mounts": [
+		"source=/run/user/1000/podman/podman.sock,target=/var/run/podman/podman.sock,type=bind"
+	],
+	"runArgs": [
+		"--userns=keep-id",
+		"--security-opt=label=disable",
+		"--security-opt=seccomp=unconfined",
+		"-v",
+		"/sys/fs/cgroup:/sys/fs/cgroup:ro",
+		"--hostname=GoDev"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"esbenp.prettier-vscode",
+				"redhat.vscode-yaml",
+				"davidanson.vscode-markdownlint",
+				"shardulm94.trailing-spaces",
+				"IBM.output-colorizer",
+				"msjsdiag.vscode-react-native",
+				"GitHub.copilot",
+				"ms-graph.kiota"
+			]
+		}
+	}, 
+	"remoteUser": "root"
+}
