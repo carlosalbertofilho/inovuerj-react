@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 // import sortBy from "underscore/modules/sortBy.js";
 // import findWhere from "underscore/modules/findWhere.js";
 // import where from "underscore/modules/where.js";
-//import { estadosBrasileiroSigla } from "./estados";
+// import { estadosBrasileiroSigla } from "./estados";
 import estados from "./estados.json";
 import municipios from "./municipios.json";
 
@@ -24,16 +24,16 @@ function App() {
   };
   const botaoDesabilitado = () => {
     const campos = Object.keys(formValores);
-    const camposPreenchidos = campos.filter((campo) => formValores[campo] !== "");
+    const camposPreenchidos = campos.filter(
+      (campo) => formValores[campo] !== ""
+    );
     return campos.length > camposPreenchidos.length;
   };
   const [formValores, setFormValores] = useState(valoresIniciaisDoFormulario);
   const [municipioFiltrado, setMunicipioFiltrado] = useState(
     buscarMunicipiosFiltradosPorEstado()
   );
-  const [desabilitaBotao, setDesabilitaBotao] = useState(
-    botaoDesabilitado()
-  );
+  const [desabilitaBotao, setDesabilitaBotao] = useState(botaoDesabilitado());
 
   const enviarFormulario = (event) => {
     event.preventDefault();
@@ -57,7 +57,7 @@ function App() {
     setDesabilitaBotao(botaoDesabilitado());
   }, [formValores]);
 
-  //const estadosBrasileiroOpcoes = sortBy(estadosBrasileiroSigla, 'nome');
+  // const estadosBrasileiroOpcoes = sortBy(estadosBrasileiroSigla, 'nome');
 
   return (
     <>
