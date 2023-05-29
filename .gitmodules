@@ -1,0 +1,3 @@
+[submodule "uerj-treinamento"]
+	path = uerj-treinamento
+	url = https://github.com/vicentecalfo/uerj-treinamento.git
