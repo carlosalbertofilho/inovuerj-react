@@ -8,17 +8,21 @@ const valoresIniciaisDoFormulario = {
   estado: "",
   municipio: "",
 };
+
 function App() {
+  const [formValores, setFormValores] = useState(valoresIniciaisDoFormulario);
   const [regiao, setRegiao] = useState([]);
   const [estadoFiltrado, setEstadoFiltrado] = useState([]);
   const [municipioFiltrado, setMunicipioFiltrado] = useState([]);
 
   useEffect(() => {
-    fetch(
-      "https://servicodados.ibge.gov.br/api/v1/localidades/regioes?orderBy=nome"
-    )
-      .then((resposta) => resposta.json())
-      .then((dados) => setRegiao(dados));
+    (async () => {
+      const resposta = await fetch(
+        "https://servicodados.ibge.gov.br/api/v1/localidades/regioes?orderBy=nome"
+      );
+      const dados = await resposta.json();
+      setRegiao(dados);
+    })();
   }, []);
 
   const buscarEstadosFiltradosPorRegiao = () => {
@@ -51,7 +55,7 @@ function App() {
     );
     return campos.length > camposPreenchidos.length;
   };
-  const [formValores, setFormValores] = useState(valoresIniciaisDoFormulario);
+
   const [desabilitaBotao, setDesabilitaBotao] = useState(botaoDesabilitado());
 
   const enviarFormulario = (event) => {
@@ -84,7 +88,73 @@ function App() {
     );
   }, [formValores.estado]);
 
-  useEffect(() => setDesabilitaBotao(botaoDesabilitado()), [formValores]);
+  const verificaValidacao = () => {
+    const erroDosCampos = {
+      nomeCompleto: {
+        min: {
+          check: (valor) => valor.length >= 6,
+          message: "O nome deve ter no mínimo 6 caracteres",
+        },
+        max: {
+          check: (valor) => valor.length <= 12,
+          message: "O nome deve ter no máximo 12 caracteres",
+        },
+      },
+      email: {
+        valido: {
+          check: (value) => value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i),
+          message: "Não parece um e-mail válido",
+        },
+      },
+      regiao: {
+        valido: {
+          check: (value) => value !== "",
+          message: "Campo obrigatório.",
+        },
+      },
+      estado: {
+        valido: {
+          check: (value) => value !== "",
+          message: "Campo obrigatório.",
+        },
+      },
+      municipio: {
+        valido: {
+          check: (value) => value !== "",
+          message: "Campo obrigatório.",
+        },
+      },
+    };
+    const out = {};
+    const campos = Object.keys(erroDosCampos);
+    campos.forEach((campo) => {
+      const validacoes = Object.keys(erroDosCampos[campo]);
+      for (let i = 0; i < validacoes.length; i++) {
+        const naoValido = !erroDosCampos[campo][validacoes[i]].check(
+          formValores[campo]
+        );
+        if (naoValido) {
+          out[campo] = erroDosCampos[campo][validacoes[i]].message;
+          break;
+        }
+      }
+    });
+    out.submitDisabled = Object.keys(out).length > 0;
+    return out;
+  };
+
+  const [validacaoForm, setValidacaoForm] = useState(verificaValidacao());
+
+  useEffect(() => setValidacaoForm(verificaValidacao), [formValores]);
+
+  const CampoErro = ({ campo }) => {
+    const hasError = validacaoForm.hasOwnProperty(campo);
+    return !hasError ? null : (
+      <span className="has-text-danger is-size-7 p-2">
+        {validacaoForm[campo]}
+      </span>
+    );
+  };
 
   return (
     <>
@@ -108,6 +178,7 @@ function App() {
                   onChange={escutandoValorDosCampos}
                   value={formValores.nomeCompleto}
                 />
+                <CampoErro campo="nomeCompleto" />
               </div>
               <div className="column">
                 <label>E-mail</label>
@@ -119,6 +190,7 @@ function App() {
                   onChange={escutandoValorDosCampos}
                   value={formValores.email}
                 />
+                <CampoErro campo="email" />
               </div>
             </div>
             <div className="columns">
