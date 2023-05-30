@@ -3,6 +3,7 @@ import "./App.css";
 import { Section } from "./components/layout/Section";
 import { Columns, Column } from "./components/layout/Columns";
 import { useState, useEffect, useMemo } from "react";
+import IBGEService from "./services/ibge.service";
 
 const valoresIniciaisDoFormulario = {
   nomeCompleto: "",
@@ -17,6 +18,15 @@ export const App = () => {
   const [regioes, setRegioes] = useState([]);
   const [estadoFiltrado, setEstadoFiltrado] = useState([]);
   const [municipioFiltrado, setMunicipioFiltrado] = useState([]);
+
+  const ibgeService = useMemo(() => new IBGEService(), []);
+
+  useEffect(() => {
+    (async () => {
+      const data = await ibgeService.regioes();
+      setRegioes(data);
+    })();
+  }, [ibgeService]);
 
   const enviarFormulario = (event) => {
     event.preventDefault();
