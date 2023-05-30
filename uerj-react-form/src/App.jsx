@@ -2,8 +2,36 @@ import "bulma/css/bulma.min.css";
 import "./App.css";
 import { Section } from "./components/layout/Section";
 import { Columns, Column } from "./components/layout/Columns";
+import { useState, useEffect, useMemo } from "react";
+
+const valoresIniciaisDoFormulario = {
+  nomeCompleto: "",
+  email: "",
+  regiao: "",
+  estado: "",
+  municipio: "",
+};
 
 export const App = () => {
+  const [formValores, setFormValores] = useState(valoresIniciaisDoFormulario);
+  const [regioes, setRegioes] = useState([]);
+  const [estadoFiltrado, setEstadoFiltrado] = useState([]);
+  const [municipioFiltrado, setMunicipioFiltrado] = useState([]);
+
+  const enviarFormulario = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const formData = Object.fromEntries(new FormData(form));
+    console.log(formData);
+  };
+  const limparFormulario = (event) => {
+    event.preventDefault();
+    setFormValores({ ...valoresIniciaisDoFormulario });
+  };
+  const escutandoValorDosCampos = (event) => {
+    const { name, value } = event.target;
+    setFormValores({ ...formValores, [name]: value });
+  };
   return (
     <>
       <Section>
@@ -11,7 +39,7 @@ export const App = () => {
         <p className="subtitle">Treinamento de React</p>
       </Section>
       <Section>
-        <form>
+        <form onSubmit={enviarFormulario}>
           <Columns>
             <Column> nome</Column>
             <Column> email</Column>
@@ -22,7 +50,18 @@ export const App = () => {
             <Column> município</Column>
           </Columns>
           <Columns>
-            <Column> botões</Column>
+            <Column>
+              <button className="button mr-4 is-primary" type="submit">
+                Enviar
+              </button>
+              <button
+                className="button"
+                type="reset"
+                onClick={limparFormulario}
+              >
+                Limpar Formulário
+              </button>
+            </Column>
           </Columns>
         </form>
       </Section>
