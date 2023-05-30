@@ -14,6 +14,13 @@ function App() {
   const [regiao, setRegiao] = useState([]);
   const [estadoFiltrado, setEstadoFiltrado] = useState([]);
   const [municipioFiltrado, setMunicipioFiltrado] = useState([]);
+  const [camposMexidos, setCamposMexidos] = useState({
+    nomeCompleto: false,
+    email: false,
+    regiao: false,
+    estado: false,
+    municipio: false,
+  });
 
   useEffect(() => {
     (async () => {
@@ -73,6 +80,7 @@ function App() {
   const escutandoValorDosCampos = (event) => {
     const { name, value } = event.target;
     setFormValores({ ...formValores, [name]: value });
+    setCamposMexidos({ ...camposMexidos, [name]: true });
   };
 
   useEffect(() => {
@@ -149,7 +157,8 @@ function App() {
 
   const CampoErro = ({ campo }) => {
     const hasError = validacaoForm.hasOwnProperty(campo);
-    return !hasError ? null : (
+    const naoMexeu = !camposMexidos[campo];
+    return (!hasError || naoMexeu) ? null : (
       <span className="has-text-danger is-size-7 p-2">
         {validacaoForm[campo]}
       </span>
