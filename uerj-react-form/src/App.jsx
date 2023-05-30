@@ -6,6 +6,8 @@ import { useState, useEffect, useMemo } from "react";
 import IBGEService from "./services/ibge.service";
 import config from "./appConfigFormValidation";
 import { validationFormFields } from "./utils/validationFormFields";
+import { Input } from "./components/form/Input";
+import { Select } from "./components/form/Select";
 
 const valoresIniciaisDoFormulario = {
   nomeCompleto: "",
@@ -76,17 +78,80 @@ export const App = () => {
       <Section>
         <form onSubmit={enviarFormulario}>
           <Columns>
-            <Column> nome</Column>
-            <Column> email</Column>
-          </Columns>
-          <Columns>
-            <Column> região</Column>
-            <Column> estados</Column>
-            <Column> município</Column>
+            <Column>
+              <Input
+                name="nomeCompleto"
+                label="Nome Completo"
+                placeholder="Nome Completo"
+                onChange={escutandoValorDosCampos}
+                value={formValores.nomeCompleto}
+                validation={validacaoForm}
+              />
+            </Column>
+            <Column>
+              <Input
+                name="email"
+                label="E-mail"
+                placeholder="Informe seu melhor e-mail"
+                onChange={escutandoValorDosCampos}
+                value={formValores.email}
+                validation={validacaoForm}
+              />
+            </Column>
           </Columns>
           <Columns>
             <Column>
-              <button className="button mr-4 is-primary" type="submit">
+              <Select
+                name="regiao"
+                label="Escolha uma região"
+                onChange={escutandoValorDosCampos}
+                value={formValores.regiao}
+                validation={validacaoForm}
+                options={regioes}
+                optionMap={{
+                  value: "id",
+                  label: "nome",
+                }}
+              />
+            </Column>
+            <Column>
+              <Select
+                name="estado"
+                label="Escolha um estado"
+                onChange={escutandoValorDosCampos}
+                value={formValores.estado}
+                validation={validacaoForm}
+                options={estadoFiltrado}
+                optionMap={{
+                  value: "id",
+                  label: "nome",
+                }}
+                disabled={estadoFiltrado.length === 0}
+              />
+            </Column>
+            <Column>
+              <Select
+                name="municipio"
+                label="Escolha um município"
+                onChange={escutandoValorDosCampos}
+                value={formValores.municipio}
+                validation={validacaoForm}
+                options={municipioFiltrado}
+                optionMap={{
+                  value: "id",
+                  label: "nome",
+                }}
+                disabled={municipioFiltrado.length === 0}
+              />
+            </Column>
+          </Columns>
+          <Columns>
+            <Column>
+              <button
+                className="button mr-4 is-primary"
+                type="submit"
+                disabled={validacaoForm.submitDisabled} // incluir
+              >
                 Enviar
               </button>
               <button
