@@ -4,6 +4,8 @@ import { Section } from "./components/layout/Section";
 import { Columns, Column } from "./components/layout/Columns";
 import { useState, useEffect, useMemo } from "react";
 import IBGEService from "./services/ibge.service";
+import config from "./appConfigFormValidation";
+import { validationFormFields } from "./utils/validationFormFields";
 
 const valoresIniciaisDoFormulario = {
   nomeCompleto: "",
@@ -28,6 +30,26 @@ export const App = () => {
     })();
   }, [ibgeService]);
 
+  useEffect(() => {
+    (async () => {
+      setEstadoFiltrado(
+        await ibgeService.estadosPorRegioes(formValores.regiao)
+      );
+      setMunicipioFiltrado([]);
+    })();
+  }, [formValores.regiao, ibgeService]);
+  useEffect(() => {
+    (async () => {
+      setMunicipioFiltrado(
+        await ibgeService.municipiosPorEstados(formValores.estado)
+      );
+    })();
+  }, [formValores.estado, ibgeService]);
+  useEffect(
+    () => setvalidacaoForm(validationFormFields(config, formValores)),
+    [formValores]
+  );
+
   const enviarFormulario = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -42,6 +64,9 @@ export const App = () => {
     const { name, value } = event.target;
     setFormValores({ ...formValores, [name]: value });
   };
+  const [validacaoForm, setvalidacaoForm] = useState(
+    validationFormFields(config, formValores)
+  );
   return (
     <>
       <Section>
