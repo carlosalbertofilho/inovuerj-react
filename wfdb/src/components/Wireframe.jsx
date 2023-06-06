@@ -5,11 +5,13 @@ function Wireframe({ children }) {
           <div className="mb-5">
             <img src="WFDB-logo.png" alt="Logo" />
           </div>
-          <div className="flex flex-1">menu</div>
+          <div className="flex flex-1">
+            {children[0]}
+          </div>
           <div>rodapé</div>
         </div>
         <div className="bg-gray-100 text-left min-h-screen flex-1">
-          {children}
+          {children[1]}
         </div>
       </div>
     );
