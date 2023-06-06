@@ -20,7 +20,7 @@ function App() {
 
   return (
     <Wireframe>
-      <MenuINPE onClick={(event) => setUrl(event)} />
+      <MenuINPE onClick={(event) => setUrl(event)} activeUrl={url} />
       <MapHolder geoJson={geoJSON} />
     </Wireframe>
   );
