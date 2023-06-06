@@ -9,6 +9,11 @@ class INPEService {
         const response = await fetch(`${this.#baseURL}/home/`);
         const data = await response.json();
         return data;
-      }
+    }
+    async fetchData(url) {
+        const response = await fetch(`${this.#baseURL}${url}`);
+        const data = await response.json();
+        return data;
+    }
 }
 export default INPEService;
