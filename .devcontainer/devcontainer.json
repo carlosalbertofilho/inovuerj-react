@@ -29,7 +29,9 @@
 				"IBM.output-colorizer",
 				"msjsdiag.vscode-react-native",
 				"GitHub.copilot",
-				"ms-graph.kiota"
+				"ms-graph.kiota",
+				"bradlc.vscode-tailwindcss",
+				"eamodio.gitlens"
 			]
 		}
 	}, 
