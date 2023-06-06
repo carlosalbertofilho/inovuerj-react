@@ -1,5 +1,6 @@
 import "bulma/css/bulma.min.css";
 import "./App.css";
+
 import { Section } from "./components/layout/Section";
 import { Columns, Column } from "./components/layout/Columns";
 import { useState, useEffect, useMemo } from "react";
@@ -8,6 +9,7 @@ import config from "./appConfigFormValidation";
 import { validationFormFields } from "./utils/validationFormFields";
 import { Input } from "./components/form/Input";
 import { Select } from "./components/form/Select";
+
 
 const valoresIniciaisDoFormulario = {
   nomeCompleto: "",
