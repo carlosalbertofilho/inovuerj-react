@@ -8,7 +8,7 @@ function Wireframe({ children }) {
           <div className="flex flex-1">
             {children[0]}
           </div>
-          <div>rodapé</div>
+          <div>{children[2]}</div>
         </div>
         <div className="bg-gray-100 text-left min-h-screen flex-1">
           {children[1]}

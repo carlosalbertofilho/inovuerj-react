@@ -1,9 +1,25 @@
 import { Map, GeoJson } from "pigeon-maps";
-function MapHolder({ geoJson }) {
+import Notification from "./Notification";
+import { useEffect, useState } from "react";
+function MapHolder({ geoJson, zoom, center, onBoundsChanged }) {
+  const [additionalInfo, setAdditionalInfo] = useState(null);
+  const clickHandler = ({ event, anchor, payload }) => {
+    console.log("event", event);
+    console.log("anchor", anchor);
+    console.log("payload", payload);
+    setAdditionalInfo(payload.properties);
+  };
+  useEffect(() => {
+    setAdditionalInfo(null);
+  }, [geoJson]);
   return (
-    <Map defaultCenter={[-14.235004, -51.92528]} defaultZoom={4}>
+    <>
+    <Notification totalWildefireReported={geoJson?.features.length}
+      additionalInfo={additionalInfo} />
+      <Map center={center} zoom={zoom} onBoundsChanged={onBoundsChanged}>
       <GeoJson
         data={geoJson}
+        onClick={clickHandler}
         styleCallback={(feature, hover) => {
           if (feature.geometry.type === "LineString") {
             return { strokeWidth: "1", stroke: "black" };
@@ -17,6 +33,7 @@ function MapHolder({ geoJson }) {
         }}
       />
     </Map>
+    </>
   );
 }
 
