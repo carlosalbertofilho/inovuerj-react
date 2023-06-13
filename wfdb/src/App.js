@@ -1,28 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
 import "./App.css";
-import MapHolder from "./components/MapHolder";
-import MenuINPE from "./components/MenuINPE";
-import Wireframe from "./components/Wireframe";
-import INPEService from "./services/inpe.service";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import MapPage from "./pages/MapPage";
+import AboutPage from "./pages/AboutPage";
+
 function App() {
-  const inpeService = useMemo(() => new INPEService(), []);
-  const [url, setUrl] = useState("");
-  const [geoJSON, setGeoJSON] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      if (url !== "") {
-        let data = await inpeService.fetchData(url);
-        setGeoJSON(data);
-      }
-    })();
-  }, [url, inpeService]);
-
   return (
-    <Wireframe>
-      <MenuINPE onClick={(event) => setUrl(event)} activeUrl={url} />
-      <MapHolder geoJson={geoJSON} />
-    </Wireframe>
+    <Router>
+      <Routes>
+        <Route path="/" element={<MapPage />} />
+        <Route path="/about" element={<AboutPage />} />
+      </Routes>
+    </Router>
   );
 }
 
