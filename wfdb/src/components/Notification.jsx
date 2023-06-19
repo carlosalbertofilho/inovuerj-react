@@ -1,5 +1,6 @@
 import moment from "moment";
 import "moment/locale/pt-br";
+import { Link } from "react-router-dom";
 moment.locale("pt-br");
 
 function Notification({ totalWildefireReported, additionalInfo }) {
@@ -35,7 +36,7 @@ function Notification({ totalWildefireReported, additionalInfo }) {
             <table className="w-full">
               <tr>
                 <th className="w-1/2">País</th>
-                <td>{pais}</td>
+                <td><Link to={`/country/${pais}`}>{pais}</Link></td>
               </tr>
               <tr>
                 <th>Estado</th>
